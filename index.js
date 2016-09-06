@@ -137,7 +137,7 @@ module.exports = {
 			if (!errors || errors.length === 0) {
 				//writeln(ok('>> ') + head + ' ' + ok('OK') + (i === fileCount ? '\n' : ''));
 			} else {
-				writeln(fail('>> ') + head);// + ' ' + fail(errors.length + ' error' + (errors.length == 1 ? '' : 's')));
+				//writeln(fail('>> ') + head);// + ' ' + fail(errors.length + ' error' + (errors.length == 1 ? '' : 's')));
 				errorCount += errors.length;
 				errors.sort(function (a, b) {
 					if (a && !b) {
@@ -180,11 +180,11 @@ module.exports = {
 
 					var position = mapSourcePosition({source:file, line:err.line, column: err.character});
 
-					str += fail(e.toUpperCase()) + ' at ' + position.source + '(' + position.line + ',' + position.column + '):';
-					str += '\n' + (err.code ? warn('[' + err.code + ']') + ' ' : '');
-					str += warn(err.reason ? err.reason : '<undefined reason>');
+					str += position.source + '::' + position.line + '::' + position.column + '::';
+					str += ( err.code ? ( err.code.substring( 0, 1 ) === 'W' ? 'warning' : 'error' ) : 'info' ) + '::';
+					str += warn(err.reason ? '[build] '+ err.reason + ' (' + err.code + ')': '<undefined reason>');
 					if (typeof err.evidence !== 'undefined') {
-						str += '\n' + err.evidence;
+						//str += err.evidence;
 					}
 					writeln(str);
 				});
